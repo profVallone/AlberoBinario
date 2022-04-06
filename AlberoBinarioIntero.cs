@@ -83,24 +83,31 @@ namespace ProgettoAlbero
         {
             Stack s = new Stack();
             s.Push(this);
-            AlberoBinarioIntero tmp = this;
+            AlberoBinarioIntero tmp = null;
             while (s.Count != 0)
             {
+                //estraggo l'elemento in cima
+                tmp = s.Peek() as AlberoBinarioIntero;
+                Console.WriteLine(tmp.val);
                 //mi muovo sul ramo di sinistra
-                do
+                while (tmp.sx != null)
                 {
-                    System.Console.WriteLine(tmp.val);
-                    s.Push(tmp);
+                    //stampo ogni radice
+                    s.Push(tmp.sx);
                     tmp = tmp.sx;
-                } while (tmp != null);
+                    Console.WriteLine(tmp.val);
+                }
                 
                 //risalgo l'albero finchè non trovo un sottoalbero di destra
-                do 
+                do
                 {
-                    tmp = s.Pop() as AlberoBinarioIntero;
+                    if (s.Count != 0)
+                        tmp = s.Pop() as AlberoBinarioIntero;
+                    else
+                        return;
                 } while (tmp.dx == null);
-                //aggiorno il nodo temporaneo
-                tmp = tmp.dx;
+                //inserisco il sottoalbero di destra
+                s.Push(tmp.dx);
             }  
         }
 
@@ -108,83 +115,47 @@ namespace ProgettoAlbero
         {
             Stack s = new Stack();
             s.Push(this);
-            AlberoBinarioIntero tmp = this;
+            AlberoBinarioIntero tmp = null;
             AlberoBinarioIntero prec = null;
             while (s.Count != 0)
             {
+                //estraggo l'elemento in cima
+                tmp = s.Peek() as AlberoBinarioIntero;
+
                 //mi muovo sul ramo di sinistra
                 while (tmp.sx != null)
                 {
                     s.Push(tmp.sx);
                     tmp = tmp.sx;
-                } 
-                //estraggo l'elemento in cima
-                tmp = s.Pop() as AlberoBinarioIntero;
+                }
 
                 //risalgo l'albero finchè non trovo un sottoalbero di destra
-                while(tmp.dx == null || tmp.dx == prec)
+                while (tmp.dx == null || tmp.dx == prec)
                 {
                     //stampo il nodo se è foglia oppure 
                     //ho già visitato il sottoalbero di destra
                     Console.WriteLine(tmp.val);
-                    
+                    s.Pop();
+
                     //risalgo anche il precedente
                     prec = tmp;
                     
                     //verifico che non ho stampato la radice dell'albero
                     if (s.Count != 0)
                         //ho ancora nodi da visitare
-                        tmp = s.Pop() as AlberoBinarioIntero;
+                        tmp = s.Peek() as AlberoBinarioIntero;
                     else
                         //ho visitato l'intero albero
                         return;
                 }
 
                 //il nodo considerato non è nè foglia nè radice già visitata
-                //reinserisco il nodo nella pila e scendo a destra
-                s.Push(tmp);
-                
-                tmp = tmp.dx;
-                s.Push(tmp);
+                //inserisco il nodo di destra nello stack per
+                //poter considerare il nuovo sottoalbero
+                s.Push(tmp.dx);
                 
                 //aggiorno il nodo precedente
-                prec = tmp;
-            }
-        }
-
-        public void stampaIterativaPosticipata2()
-        {
-            List<AlberoBinarioIntero> l = new List<AlberoBinarioIntero>();
-            Stack s = new Stack();
-            s.Push(this);
-            AlberoBinarioIntero tmp = this;
-            while (s.Count != 0)
-            {
-                tmp = s.Peek() as AlberoBinarioIntero;
-                if (tmp.dx == null && tmp.sx == null)
-                {
-                    s.Pop();
-                    Console.WriteLine(tmp.val);
-                }
-                else
-                {
-                    if (l.Contains(tmp))
-                    {
-                        Console.WriteLine(tmp.val);
-                        l.Remove(tmp);
-                        s.Pop();
-                    }
-                    else
-                    {
-                        l.Add(tmp);
-                        if (tmp.dx != null)
-                            s.Push(tmp.dx);
-                        if (tmp.sx != null)
-                            s.Push(tmp.sx);
-                    }
-                    
-                }
-              
+                prec = tmp.dx;
             }
         }
 
@@ -201,6 +172,100 @@ namespace ProgettoAlbero
                     s.Push(tmp.dx);
                 if (tmp.sx != null)
                     s.Push(tmp.sx);
+            }
+        }
+
+        public void stampaIterativaPosticipata2()
+        {
+            List<AlberoBinarioIntero> l = new List<AlberoBinarioIntero>();
+            Stack s = new Stack();
+            s.Push(this);
+            AlberoBinarioIntero tmp = this;
+            while (s.Count != 0)
+            {
+                //considero la cima dello stack
+                tmp = s.Peek() as AlberoBinarioIntero;
+                
+                //è un nodo foglia, lo stampo
+                if (tmp.dx == null && tmp.sx == null)
+                {
+                    s.Pop();
+                    Console.WriteLine(tmp.val);
+                }
+                else //è una radice
+                {
+                    //ho già visitato questa radice se è si allora
+                    //vuol dire che sto risalendo e quindi la devo stampare
+                    //e rimuovere dall'elenco delle radici e dallo stack
+                    if (l.Contains(tmp))
+                    {
+                        Console.WriteLine(tmp.val);
+                        l.Remove(tmp);
+                        s.Pop();
+                    }
+                    else
+                    {//è la prima volta che visito la radice
+                        //vuol dire che sto scendendo
+                        //aggiungo la radice alla lista ed i figli allo stack
+                        l.Add(tmp);
+                        if (tmp.dx != null)
+                            s.Push(tmp.dx);
+                        if (tmp.sx != null)
+                            s.Push(tmp.sx);
+                    }
+
+                }
+
+            }
+        }
+
+        public void stampaIterativaAnticipata3()
+        {
+            Stack s = new Stack();
+            AlberoBinarioIntero curr = this;
+            while(curr != null || s.Count != 0)
+            {
+                if(curr != null)
+                {
+                    s.Push(curr);
+                    Console.WriteLine(curr.val);
+                    curr = curr.sx;
+                }
+                else
+                {
+                    curr = s.Pop() as AlberoBinarioIntero;
+                    curr = curr.dx;
+                }
+            }
+        }
+
+        public void stampaIterativaPosticipata3()
+        {
+            Stack s = new Stack();
+            AlberoBinarioIntero curr = this;
+            AlberoBinarioIntero prec = null;
+            while (curr != null || s.Count != 0)
+            {
+                if (curr != null)
+                {
+                    s.Push(curr);
+                    curr = curr.sx;
+                }
+                else
+                {
+                    curr = s.Peek() as AlberoBinarioIntero;
+                    if (curr.dx == prec || curr.dx == null)
+                    {
+                        Console.WriteLine(curr.val);
+                        s.Pop();
+                        prec = curr;
+                        curr = null;
+                    }
+                    else
+                    {
+                        curr = curr.dx;
+                    }
+                }
             }
         }
 
