@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-
+using System.Collections.Generic;
 
 namespace ProgettoAlbero
 {
@@ -34,7 +34,7 @@ namespace ProgettoAlbero
             this.dx = a;
         }
 
-        public void stampa()
+        public void stampaRicorsivaAnticipata()
         {
             if (this.sx == null && this.dx == null)
             {
@@ -45,18 +45,41 @@ namespace ProgettoAlbero
                 System.Console.WriteLine(this.val);
                 try
                 {
-                    this.sx.stampa();
+                    this.sx.stampaRicorsivaAnticipata();
                 }
                 catch (Exception e) {}
                 try
                 {
-                    this.dx.stampa();
+                    this.dx.stampaRicorsivaAnticipata();
                 }
                 catch (Exception e) { }
             }
         }
 
-        public void stampaIterativa()
+        public void stampaRicorsivaPosticipata()
+        {
+            if (this.sx == null && this.dx == null)
+            {
+                System.Console.WriteLine(this.val);
+            }
+            else
+            {
+                
+                try
+                {
+                    this.sx.stampaRicorsivaPosticipata();
+                }
+                catch (Exception e) { }
+                try
+                {
+                    this.dx.stampaRicorsivaPosticipata();
+                }
+                catch (Exception e) { }
+                System.Console.WriteLine(this.val);
+            }
+        }
+
+        public void stampaIterativaAnticipata()
         {
             Stack s = new Stack();
             s.Push(this);
@@ -81,7 +104,91 @@ namespace ProgettoAlbero
             }  
         }
 
-        public void stampaIterativa2()
+        public void stampaIterativaPosticipata()
+        {
+            Stack s = new Stack();
+            s.Push(this);
+            AlberoBinarioIntero tmp = this;
+            AlberoBinarioIntero prec = null;
+            while (s.Count != 0)
+            {
+                //mi muovo sul ramo di sinistra
+                while (tmp.sx != null)
+                {
+                    s.Push(tmp.sx);
+                    tmp = tmp.sx;
+                } 
+                //estraggo l'elemento in cima
+                tmp = s.Pop() as AlberoBinarioIntero;
+
+                //risalgo l'albero finchè non trovo un sottoalbero di destra
+                while(tmp.dx == null || tmp.dx == prec)
+                {
+                    //stampo il nodo se è foglia oppure 
+                    //ho già visitato il sottoalbero di destra
+                    Console.WriteLine(tmp.val);
+                    
+                    //risalgo anche il precedente
+                    prec = tmp;
+                    
+                    //verifico che non ho stampato la radice dell'albero
+                    if (s.Count != 0)
+                        //ho ancora nodi da visitare
+                        tmp = s.Pop() as AlberoBinarioIntero;
+                    else
+                        //ho visitato l'intero albero
+                        return;
+                }
+
+                //il nodo considerato non è nè foglia nè radice già visitata
+                //reinserisco il nodo nella pila e scendo a destra
+                s.Push(tmp);
+                
+                tmp = tmp.dx;
+                s.Push(tmp);
+                
+                //aggiorno il nodo precedente
+                prec = tmp;
+            }
+        }
+
+        public void stampaIterativaPosticipata2()
+        {
+            List<AlberoBinarioIntero> l = new List<AlberoBinarioIntero>();
+            Stack s = new Stack();
+            s.Push(this);
+            AlberoBinarioIntero tmp = this;
+            while (s.Count != 0)
+            {
+                tmp = s.Peek() as AlberoBinarioIntero;
+                if (tmp.dx == null && tmp.sx == null)
+                {
+                    s.Pop();
+                    Console.WriteLine(tmp.val);
+                }
+                else
+                {
+                    if (l.Contains(tmp))
+                    {
+                        Console.WriteLine(tmp.val);
+                        l.Remove(tmp);
+                        s.Pop();
+                    }
+                    else
+                    {
+                        l.Add(tmp);
+                        if (tmp.dx != null)
+                            s.Push(tmp.dx);
+                        if (tmp.sx != null)
+                            s.Push(tmp.sx);
+                    }
+                    
+                }
+              
+            }
+        }
+
+        public void stampaIterativaAnticipata2()
         {
             Stack s = new Stack();
             s.Push(this);
