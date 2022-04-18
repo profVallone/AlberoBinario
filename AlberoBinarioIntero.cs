@@ -79,6 +79,30 @@ namespace ProgettoAlbero
             }
         }
 
+        public void stampaRicorsivaSimmetrica()
+        {
+            if (this.sx == null && this.dx == null)
+            {
+                System.Console.WriteLine(this.val);
+            }
+            else
+            {
+
+                try
+                {
+                    this.sx.stampaRicorsivaSimmetrica();
+                }
+                catch (Exception e) { }
+                System.Console.WriteLine(this.val);
+                try
+                {
+                    this.dx.stampaRicorsivaSimmetrica();
+                }
+                catch (Exception e) { }
+                
+            }
+        }
+
         public void stampaIterativaAnticipata()
         {
             Stack s = new Stack();
@@ -159,6 +183,41 @@ namespace ProgettoAlbero
             }
         }
 
+        public void stampaIterativaSimmetrica()
+        {
+            Stack s = new Stack();
+            s.Push(this);
+            AlberoBinarioIntero tmp = null;
+            while (s.Count != 0)
+            {
+                //estraggo l'elemento in cima
+                tmp = s.Peek() as AlberoBinarioIntero;
+                //Console.WriteLine(tmp.val);
+                //mi muovo sul ramo di sinistra
+                while (tmp.sx != null)
+                {
+                    //stampo ogni radice
+                    s.Push(tmp.sx);
+                    tmp = tmp.sx;
+                }
+
+                //risalgo l'albero finchè non trovo un sottoalbero di destra
+                do
+                {
+                    if (s.Count != 0)
+                    {
+                        tmp = s.Pop() as AlberoBinarioIntero;
+                        Console.WriteLine(tmp.val);
+                    }
+
+                    else
+                        return;
+                } while (tmp.dx == null);
+                //inserisco il sottoalbero di destra
+                s.Push(tmp.dx);
+            }
+        }
+
         public void stampaIterativaAnticipata2()
         {
             Stack s = new Stack();
@@ -218,6 +277,7 @@ namespace ProgettoAlbero
 
             }
         }
+
 
         public void stampaIterativaAnticipata3()
         {

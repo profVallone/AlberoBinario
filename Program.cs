@@ -19,18 +19,16 @@ namespace ProgettoAlbero
             p = new AlberoBinarioIntero(39, sx, dx);
             sx = p;
             dx = new AlberoBinarioIntero(66);
-            dx.aggiungiFiglioDx(new AlberoBinarioIntero(77));
+            dx.aggiungiFiglioSx(new AlberoBinarioIntero(77));
             
             r.aggiungiFiglioSx(new AlberoBinarioIntero(89, sx, dx));
             
             sx = new AlberoBinarioIntero(44);
             dx = new AlberoBinarioIntero(12);
-            dx.aggiungiFiglioDx(new AlberoBinarioIntero(58));
             
             r.aggiungiFiglioDx(new AlberoBinarioIntero(28, sx, dx));
 
-            r.stampaRicorsivaAnticipata();
-            Console.WriteLine("----------------");
+            Console.WriteLine("----ToString------------");
             Console.WriteLine(r);
             Console.WriteLine("--RicorsivaAnticipata--------------");
             r.stampaRicorsivaAnticipata();
@@ -48,6 +46,10 @@ namespace ProgettoAlbero
             r.stampaIterativaPosticipata2();
             Console.WriteLine("--IterativaPosticipata3--------------");
             r.stampaIterativaPosticipata3();
+            Console.WriteLine("--RicorsivaSimmetriva--------------");
+            r.stampaRicorsivaSimmetrica();
+            Console.WriteLine("--IterativaSimmetriva--------------");
+            r.stampaIterativaSimmetrica();
 
 
 
