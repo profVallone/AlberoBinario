@@ -9,7 +9,7 @@ namespace ProgettoAlbero
         private int val;
         private AlberoBinarioIntero sx;
         private AlberoBinarioIntero dx;
-       
+
         public AlberoBinarioIntero(int val, AlberoBinarioIntero sx, AlberoBinarioIntero dx)
         {
             this.val = val;
@@ -34,6 +34,15 @@ namespace ProgettoAlbero
             this.dx = a;
         }
 
+        public AlberoBinarioIntero getSx()
+        {
+            return sx;
+        }
+
+        public AlberoBinarioIntero getDx()
+        {
+            return dx;
+        }
         public void stampaRicorsivaAnticipata()
         {
             if (this.sx == null && this.dx == null)
@@ -47,7 +56,7 @@ namespace ProgettoAlbero
                 {
                     this.sx.stampaRicorsivaAnticipata();
                 }
-                catch (Exception e) {}
+                catch (Exception e) { }
                 try
                 {
                     this.dx.stampaRicorsivaAnticipata();
@@ -64,7 +73,7 @@ namespace ProgettoAlbero
             }
             else
             {
-                
+
                 try
                 {
                     this.sx.stampaRicorsivaPosticipata();
@@ -99,7 +108,7 @@ namespace ProgettoAlbero
                     this.dx.stampaRicorsivaSimmetrica();
                 }
                 catch (Exception e) { }
-                
+
             }
         }
 
@@ -121,7 +130,7 @@ namespace ProgettoAlbero
                     tmp = tmp.sx;
                     Console.WriteLine(tmp.val);
                 }
-                
+
                 //risalgo l'albero finchè non trovo un sottoalbero di destra
                 do
                 {
@@ -132,7 +141,7 @@ namespace ProgettoAlbero
                 } while (tmp.dx == null);
                 //inserisco il sottoalbero di destra
                 s.Push(tmp.dx);
-            }  
+            }
         }
 
         public void stampaIterativaPosticipata()
@@ -163,7 +172,7 @@ namespace ProgettoAlbero
 
                     //risalgo anche il precedente
                     prec = tmp;
-                    
+
                     //verifico che non ho stampato la radice dell'albero
                     if (s.Count != 0)
                         //ho ancora nodi da visitare
@@ -177,7 +186,7 @@ namespace ProgettoAlbero
                 //inserisco il nodo di destra nello stack per
                 //poter considerare il nuovo sottoalbero
                 s.Push(tmp.dx);
-                
+
                 //aggiorno il nodo precedente
                 prec = tmp.dx;
             }
@@ -196,7 +205,6 @@ namespace ProgettoAlbero
                 //mi muovo sul ramo di sinistra
                 while (tmp.sx != null)
                 {
-                    //stampo ogni radice
                     s.Push(tmp.sx);
                     tmp = tmp.sx;
                 }
@@ -209,7 +217,6 @@ namespace ProgettoAlbero
                         tmp = s.Pop() as AlberoBinarioIntero;
                         Console.WriteLine(tmp.val);
                     }
-
                     else
                         return;
                 } while (tmp.dx == null);
@@ -220,12 +227,13 @@ namespace ProgettoAlbero
 
         public void stampaIterativaAnticipata2()
         {
+            AlberoBinarioIntero tmp = this;
             Stack s = new Stack();
-            s.Push(this);
+            s.Push(tmp);
             while (s.Count != 0)
             {
                 //mi muovo sul ramo di sinistra
-                AlberoBinarioIntero tmp = s.Pop() as AlberoBinarioIntero;
+                tmp = s.Pop() as AlberoBinarioIntero;
                 Console.WriteLine(tmp.val);
                 if (tmp.dx != null)
                     s.Push(tmp.dx);
@@ -244,7 +252,7 @@ namespace ProgettoAlbero
             {
                 //considero la cima dello stack
                 tmp = s.Peek() as AlberoBinarioIntero;
-                
+
                 //è un nodo foglia, lo stampo
                 if (tmp.dx == null && tmp.sx == null)
                 {
@@ -283,9 +291,9 @@ namespace ProgettoAlbero
         {
             Stack s = new Stack();
             AlberoBinarioIntero curr = this;
-            while(curr != null || s.Count != 0)
+            while (curr != null || s.Count != 0)
             {
-                if(curr != null)
+                if (curr != null)
                 {
                     s.Push(curr);
                     Console.WriteLine(curr.val);
@@ -339,13 +347,77 @@ namespace ProgettoAlbero
             else
             {
                 s += "(" + this.val;
-                if(this.sx != null)
+                if (this.sx != null)
                     s += this.sx.ToString();
                 if (this.dx != null)
                     s += this.dx.ToString() + ")";
+                else
+                    s += ")";
             }
             return s;
         }
 
+        public void degenere()
+        {
+            AlberoBinarioIntero curr = this;
+            //degenereSx??
+            if (curr.sx != null && curr.dx == null)
+            {
+                while (curr.sx != null && curr.dx == null)
+                {
+                    curr = curr.sx;
+                }
+                if (curr.dx == null)
+                {
+                    Console.WriteLine("Albero degenere sx");
+                    return;
+                }
+                else
+                {
+                    curr = curr.dx;
+                }
+            }
+            //degenereDx??
+            else if (curr.sx == null && curr.dx != null)
+            {
+                while (curr.sx == null && curr.dx != null)
+                {
+                    curr = curr.dx;
+                }
+                if (curr.sx == null)
+                {
+                    Console.WriteLine("Albero degenere dx");
+                    return;
+                }
+                else
+                {
+                    curr = curr.sx;
+                }
+            }
+            else if (curr.sx != null && curr.dx != null)
+            {
+                Console.WriteLine("Albero non degenere");
+                return;
+            }
+            //mi trovo nel caso in cui stavo scendendo tutto a sx
+            // o tutto a dx ma poi trovo un nodo con un figlio dall'altra parte
+            while (!(curr.dx == null && curr.sx == null))
+            {
+                if (curr.sx != null && curr.dx == null)
+                    curr = curr.sx;
+                else if (curr.sx == null && curr.dx != null)
+                    curr = curr.dx;
+                else
+                {
+                    Console.WriteLine("Albero non degenere");
+                    return;
+                }
+            }
+            Console.WriteLine("Albero degenere generico");
+            return;  
+
+        }
+        
     }
+
 }
