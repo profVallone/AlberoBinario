@@ -66,36 +66,67 @@ namespace ProgettoAlbero
             dx = new AlberoBinarioIntero(13);
             fSx.aggiungiFiglioDx(dx);
 
-            Console.WriteLine("----DegenereSx------------");
-            Console.WriteLine(degSx);
-            Console.WriteLine("--RicorsivaAnticipata--------------");
-            degSx.stampaRicorsivaAnticipata();
-            Console.WriteLine("--RicorsivaPosticipata--------------");
-            degSx.stampaRicorsivaPosticipata();
-            Console.WriteLine("--Degenere--------------");
-            degSx.degenere();
+            //sommaAlbero
+            AlberoBinarioIntero sommaAlbero = new AlberoBinarioIntero(20);
+            sx = new AlberoBinarioIntero(7);
+            sommaAlbero.aggiungiFiglioSx(sx);
+            dx = new AlberoBinarioIntero(4);
+            sommaAlbero.aggiungiFiglioDx(dx);
 
-            Console.WriteLine("----DegenereDx------------");
-            Console.WriteLine(degDx);
-            Console.WriteLine("--RicorsivaAnticipata--------------");
-            degDx.stampaRicorsivaAnticipata();
-            Console.WriteLine("--RicorsivaPosticipata--------------");
-            degDx.stampaRicorsivaPosticipata();
-            Console.WriteLine("--Degenere--------------");
-            degDx.degenere();
+            fSx = sommaAlbero.getSx();
+            sx = new AlberoBinarioIntero(2);
+            fSx.aggiungiFiglioSx(sx);
+            dx = new AlberoBinarioIntero(3);
+            fSx.aggiungiFiglioDx(dx);
 
-            Console.WriteLine("----DegenereGen------------");
-            Console.WriteLine(degGen);
-            Console.WriteLine("--RicorsivaAnticipata--------------");
-            degGen.stampaRicorsivaAnticipata();
-            Console.WriteLine("--RicorsivaPosticipata--------------");
-            degGen.stampaRicorsivaPosticipata();
-            Console.WriteLine("--Degenere--------------");
-            degGen.degenere();
+            fDx = sommaAlbero.getDx();
+            sx = new AlberoBinarioIntero(1);
+            fDx.aggiungiFiglioSx(sx);
+            dx = new AlberoBinarioIntero(2);
+            fDx.aggiungiFiglioDx(dx);
 
-            Console.WriteLine("----NonDegenere------------");
-            Console.WriteLine(r);
-            r.degenere();
+            Console.WriteLine("----Albero------------");
+            Console.WriteLine(sommaAlbero);
+            Console.WriteLine("--RicorsivaAnticipata--------------");
+            sommaAlbero.stampaRicorsivaAnticipata();
+            Console.WriteLine("--radiceMaggiore--------------");
+            sommaAlbero.radiceMaggiore();
+            Console.WriteLine("--ricercaValore--------------");
+            Console.WriteLine(sommaAlbero.ricerca_errata(4));
+
+            Console.WriteLine("--sommaFoglie--------------");
+            Console.WriteLine(sommaAlbero.sommaFoglieRicorsiva());
+
+            //Console.WriteLine("----DegenereSx------------");
+            //Console.WriteLine(degSx);
+            //Console.WriteLine("--RicorsivaAnticipata--------------");
+            //degSx.stampaRicorsivaAnticipata();
+            //Console.WriteLine("--RicorsivaPosticipata--------------");
+            //degSx.stampaRicorsivaPosticipata();
+            //Console.WriteLine("--Degenere--------------");
+            //degSx.degenere();
+
+            //Console.WriteLine("----DegenereDx------------");
+            //Console.WriteLine(degDx);
+            //Console.WriteLine("--RicorsivaAnticipata--------------");
+            //degDx.stampaRicorsivaAnticipata();
+            //Console.WriteLine("--RicorsivaPosticipata--------------");
+            //degDx.stampaRicorsivaPosticipata();
+            //Console.WriteLine("--Degenere--------------");
+            //degDx.degenere();
+
+            //Console.WriteLine("----DegenereGen------------");
+            //Console.WriteLine(degGen);
+            //Console.WriteLine("--RicorsivaAnticipata--------------");
+            //degGen.stampaRicorsivaAnticipata();
+            //Console.WriteLine("--RicorsivaPosticipata--------------");
+            //degGen.stampaRicorsivaPosticipata();
+            //Console.WriteLine("--Degenere--------------");
+            //degGen.degenere();
+
+            //Console.WriteLine("----NonDegenere------------");
+            //Console.WriteLine(r);
+            //r.degenere();
 
 
             //Console.WriteLine("----ToString------------");

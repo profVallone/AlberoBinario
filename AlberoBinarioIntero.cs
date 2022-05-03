@@ -43,6 +43,11 @@ namespace ProgettoAlbero
         {
             return dx;
         }
+
+        public int getVal()
+        {
+            return val;
+        }
         public void stampaRicorsivaAnticipata()
         {
             if (this.sx == null && this.dx == null)
@@ -417,7 +422,156 @@ namespace ProgettoAlbero
             return;  
 
         }
-        
+        public int radiceMaggiore_Caruso()
+        {
+            int somma = 0;
+            if (sx != null || dx != null)
+            {
+
+                if (this.sx != null)
+                    somma += this.sx.radiceMaggiore_Caruso();
+                if (this.dx != null)
+                    somma += this.dx.radiceMaggiore_Caruso();
+                if (this.val > somma)
+                {
+                    Console.WriteLine(this.val);
+                }
+            }
+            return somma + this.val;
+        }
+
+        public void radiceMaggiore()
+        {
+            if (!this.foglia())
+            {
+                int somma = 0;
+                if (this.sx != null)
+                    somma += this.sx.sommaAlbero();
+                if (this.dx != null)
+                    somma += this.dx.sommaAlbero();
+                if (this.val > somma)
+                {
+                    Console.WriteLine(this.val);
+                }
+                if (this.sx != null)
+                    this.sx.radiceMaggiore();
+                if (this.dx != null)
+                    this.dx.radiceMaggiore();
+            }
+        }
+
+        private bool foglia()
+        {
+            return this.sx == null && this.dx == null;
+        }
+
+        public int sommaAlbero()
+        {
+            if(this.foglia())
+            {
+                return this.val;
+            }
+            else
+            {
+                int somma = 0;
+                if (this.sx != null)
+                    somma += this.sx.sommaAlbero();
+                if (this.dx != null)
+                    somma += this.dx.sommaAlbero();
+                return  somma + this.val;
+            }
+        }
+
+        public bool ricerca_errata(int val)
+        {
+            if (this.val == val)
+                return true;
+            else
+            {
+                if (sx != null)
+                    sx.ricerca(val);
+                if (dx != null)
+                    dx.ricerca(val);
+            }
+            return false;
+        }
+
+        public bool ricerca(int val)
+        {
+            bool trovato = false;
+            if (this.val == val)
+                trovato = true;
+            else
+            {
+                if (sx != null && sx.ricerca(val) == true)
+                    {
+                        trovato = true;
+                    } 
+                else if (dx != null && dx.ricerca(val) == true)
+                    {
+                        trovato = true;
+                    }
+            }
+            return trovato;
+        }
+
+        public bool ricercaBinariaRicorsiva(int val)
+        {
+           
+            if (this.val == val)
+                return true;
+            else
+            {
+                if (this.val > val && dx != null)
+                {
+                    return dx.ricercaBinariaRicorsiva(val);
+                }
+                else if (this.val < val && sx != null)
+                {
+                    return sx.ricercaBinariaRicorsiva(val);
+                }
+            }
+            return false;
+        }
+
+        public int sommaFoglieRicorsiva()
+        {
+            int somma = 0;
+            if (this.foglia())
+            {
+                somma += this.val;
+            }
+            else 
+            {
+                if(sx != null)
+                    somma += sx.sommaFoglieRicorsiva();
+                if(dx!=null)
+                    somma += dx.sommaFoglieRicorsiva();
+            }
+            return somma;
+        }
+
+        public int SommaFoglieIterativa()
+        {
+            AlberoBinarioIntero tmp = this;
+            Stack s = new Stack();
+            int somma = 0;
+            s.Push(tmp);
+            while (s.Count != 0)
+            {
+                //mi muovo sul ramo di sinistra
+                tmp = s.Pop() as AlberoBinarioIntero;
+                if (tmp.foglia())
+                    somma += tmp.val;
+                Console.WriteLine(tmp.val);
+                if (tmp.dx != null)
+                    s.Push(tmp.dx);
+                if (tmp.sx != null)
+                    s.Push(tmp.sx);
+            }
+            return somma;
+        }
+
     }
 
 }
